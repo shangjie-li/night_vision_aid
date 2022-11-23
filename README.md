@@ -22,7 +22,7 @@ ROS package for night vision aid (thermal -> rgb)
    pip install catkin_tools
    pip install rospkg
    ```
- - 准备模型文件，并保存至目录`night_vision_aid/modules/yolact-test/weights/seumm_lwir/`
+ - 准备模型文件，并保存至目录`night_vision_aid/modules/yolact-test/weights/seumm_lwir_15200/`
 
 ## 运行
  - 启动算法（检测结果图像可由`rqt_image_view /result`查看）
