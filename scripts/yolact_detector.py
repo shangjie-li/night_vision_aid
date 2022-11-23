@@ -40,6 +40,23 @@ def create_random_color():
     return color
 
 
+def draw_contour(img, mask, color):
+    """
+    Args:
+        img: numpy.ndarray, (h, w, 3), BGR format
+        mask: torch.Tensor, (h, w)
+        color: tuple
+    Returns:
+        img_numpy: numpy.ndarray, (h, w, 3), BGR format
+    """
+    mask_numpy = mask.byte().cpu().numpy()
+    mask_numpy = mask_numpy.astype(np.uint8)
+    contours, _ = cv2.findContours(mask_numpy, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+    cv2.drawContours(img, contours, contourIdx=-1, color=color, thickness=2)
+
+    return img
+
+
 def draw_mask(img, mask, color):
     """
     Args:
@@ -186,7 +203,8 @@ if __name__ == '__main__':
         # img = draw_segmentation_result(
         #     img, masks[i], str(labels[i]), float(scores[i]), boxes[i], color
         # )
-        img = draw_mask(img, mask=masks[i], color=color)
+        # img = draw_mask(img, mask=masks[i], color=color)
+        img = draw_contour(img, mask=masks[i], color=color)
 
     cv2.namedWindow("img", cv2.WINDOW_NORMAL)
     cv2.imshow("img", img)

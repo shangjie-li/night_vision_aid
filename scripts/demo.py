@@ -21,7 +21,7 @@ except ImportError:
     sys.path.remove('/opt/ros/kinetic/lib/python2.7/dist-packages')
     import cv2
 
-from yolact_detector import YolactDetector, draw_mask
+from yolact_detector import YolactDetector, draw_contour
 from functions import get_stamp, publish_image
 from functions import display, print_info
 
@@ -92,7 +92,7 @@ def timer_callback(event):
     cur_frame1 = cur_frame1[:, :, ::-1].copy()  # to BGR
     for i in np.argsort(scores):
         color = colors[labels[i]][::-1]  # to BGR
-        cur_frame1 = draw_mask(cur_frame1, masks[i], color)
+        cur_frame1 = draw_contour(cur_frame1, masks[i], color)
     result_frame = cur_frame1
 
     if args.display:
