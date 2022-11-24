@@ -21,7 +21,7 @@ except ImportError:
     sys.path.remove('/opt/ros/kinetic/lib/python2.7/dist-packages')
     import cv2
 
-from yolact_detector import YolactDetector, draw_contour
+from yolact_detector import YolactDetector, draw_contour, draw_mask
 from functions import get_stamp, publish_image
 from functions import display, print_info
 
@@ -40,6 +40,8 @@ parser.add_argument('--frame_rate', default=10, type=int,
                     help='Working frequency.')
 parser.add_argument('--display', action='store_true',
                     help='Whether to display and save all videos.')
+parser.add_argument('--draw_mask', action='store_true',
+                    help='Whether to draw the mask.')
 args = parser.parse_args()
 
 
@@ -93,6 +95,8 @@ def timer_callback(event):
     for i in np.argsort(scores):
         color = colors[labels[i]][::-1]  # to BGR
         cur_frame1 = draw_contour(cur_frame1, masks[i], color)
+        if args.draw_mask:
+            cur_frame1 = draw_mask(cur_frame1, masks[i], color)
     result_frame = cur_frame1
 
     if args.display:
@@ -114,10 +118,10 @@ if __name__ == '__main__':
 
     # 定义颜色
     colors = {
-        'person': (244,  67,  54),
-        'car':    (255, 235,  59),
-        'bus':    (  0, 188, 212),
-        'truck':  ( 96, 125, 139),
+        'person': (255, 255, 255),
+        'car': (244, 67, 54),
+        'bus': (0, 188, 212),
+        'truck': (255, 235, 59),
     }  # RGB colors
 
     # 记录时间戳和检测结果
